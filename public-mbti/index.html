@@ -37,6 +37,8 @@
   .go{background:var(--coral);color:#fff}
   .ghost{background:#eef1f6;color:var(--ink)}
   .share{background:var(--mint);color:#fff}
+  .brunch{background:#2b2d42;color:#fff;text-decoration:none;margin-top:22px;line-height:1.5}
+  .brunch small{font-weight:500;opacity:.8;font-size:13px}
   .opt{background:var(--opt);color:var(--ink);text-align:left;font-weight:500;line-height:1.55;border:2px solid transparent;padding:16px 18px}
   .opt:hover{border-color:var(--sky)}
   .top{display:flex;align-items:center;gap:10px;margin-bottom:18px}
@@ -162,6 +164,7 @@
 
     <div class="box" style="background:none;padding:14px 0 0"><h3 style="text-align:center">다른 유형도 구경하기</h3></div>
     <div class="all" id="all"></div>
+    <a class="btn brunch" id="brunch" href="#" target="_blank" rel="noopener" onclick="track('brunch','브런치 연재 클릭')">📖 16년 차 선배의 브런치 연재 보러 가기<br><small>「공공기관, 알고 들어가면 붙는다」</small></a>
     <p class="foot">브런치 연재 「공공기관, 알고 들어가면 붙는다」<br>재미로 보는 자가진단이며 실제 채용·인성검사와 무관합니다.</p>
   </section>
 
@@ -208,6 +211,9 @@ let i = 0, picks = [];
 const $ = id => document.getElementById(id);
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
 function begin(){show('story')}
+// 브런치 연재 주소 (결과 화면 맨 아래 버튼)
+const BRUNCH_URL = "https://brunch.co.kr/@klalala";
+(function(){const b=document.getElementById('brunch');if(BRUNCH_URL){b.href=BRUNCH_URL}else{b.style.display='none'}})();
 // 방문 통계(고트카운터): 화면에는 안 보이고 knowandjoin.goatcounter.com 에서만 확인
 function track(path,title){try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path,title,event:true})}catch(e){}}
 function startQuiz(){i=0;picks=[];show('quiz');render();track('start','테스트 시작')}
