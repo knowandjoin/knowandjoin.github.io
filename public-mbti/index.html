@@ -208,7 +208,9 @@ let i = 0, picks = [];
 const $ = id => document.getElementById(id);
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
 function begin(){show('story')}
-function startQuiz(){i=0;picks=[];show('quiz');render()}
+// 방문 통계(고트카운터): 화면에는 안 보이고 knowandjoin.goatcounter.com 에서만 확인
+function track(path,title){try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path,title,event:true})}catch(e){}}
+function startQuiz(){i=0;picks=[];show('quiz');render();track('start','테스트 시작')}
 function render(){
   const q=Q[i];
   $('qnum').textContent=`Q${i+1} / ${Q.length}`;
@@ -227,7 +229,7 @@ function score(){
   const A=a>3?1:a<3?0:firstA, B=b>3?1:b<3?0:firstB;
   return {code:`${A}${B}`,a,b};
 }
-function finish(){const s=score();paint(s.code,s.a,s.b);history.replaceState(null,'','#'+TYPES[s.code].key)}
+function finish(){const s=score();paint(s.code,s.a,s.b);history.replaceState(null,'','#'+TYPES[s.code].key);track('result-'+TYPES[s.code].letters,'결과 '+TYPES[s.code].letters+' '+TYPES[s.code].name)}
 function paint(code,a,b){
   const t=TYPES[code];
   $('rletters').textContent=t.letters;
@@ -252,6 +254,7 @@ async function share(){
   const text=`나의 공공기관 MBTI는 ${lt}형, "${name}"! 너는 어떤 유형이야?`;
   const url=location.href.split('#')[0];
   try{
+    track('share','결과 공유');
     if(navigator.share){await navigator.share({title:'나의 공공기관 MBTI는?',text,url})}
     else{await navigator.clipboard.writeText(text+' '+url);toast('링크를 복사했어요')}
   }catch(e){}
@@ -259,5 +262,6 @@ async function share(){
 // 공유받은 링크(#A~D)로 들어오면 해당 결과 바로 보기
 (function(){const k=location.hash.slice(1);const c=Object.keys(TYPES).find(x=>TYPES[x].key===k);if(c)paint(c)})();
 </script>
+<script data-goatcounter="https://knowandjoin.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
